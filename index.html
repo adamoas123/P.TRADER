@@ -1,430 +1,479 @@
 <!DOCTYPE html>
-<html lang="so">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mohamed Ugas - Maareynta Xisaabta Forex</title>
-    <!-- Google Fonts for futuristic look -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Price Calculator – Risk Management Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Define CSS variables for easy theme management */
-        :root {
-            --bg-color: #0d0d0d; /* Dark background */
-            --text-color: #e0e0e0; /* Light text for contrast */
-            --accent-color: #00e676; /* Vibrant Green for highlights */
-            --subtle-gray: #1a1a1a; /* Slightly lighter dark for sections */
-            --light-gray: #aaaaaa; /* For secondary text */
-            --border-color: rgba(0, 230, 118, 0.1); /* Subtle accent border */
-            --shadow-color: rgba(0, 230, 118, 0.4); /* Glow effect for accents */
-        }
-
-        /* Basic body styling */
         body {
-            font-family: 'Rajdhani', sans-serif; /* Main content font */
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            overflow-x: hidden; /* Prevent horizontal scroll */
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e5e5e5;
         }
-
-        /* Container for content centering and max-width */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Header section styling */
-        header {
-            text-align: center;
-            padding: 80px 20px;
+        .container-glow {
             position: relative;
-            overflow: hidden; /* Ensures pseudo-element doesn't overflow */
-        }
-
-        /* Futuristic background shape for the header */
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, rgba(0, 230, 118, 0.1), rgba(0, 0, 0, 0.8));
-            clip-path: polygon(0 0, 100% 0, 100% 70%, 0 100%); /* Diagonal cut */
-            z-index: 0;
-        }
-
-        /* Main heading in header */
-        header h1 {
-            font-family: 'Orbitron', sans-serif; /* Futuristic font for titles */
-            font-size: 3.5em;
-            color: var(--accent-color);
-            margin-bottom: 10px;
-            text-shadow: 0 0 15px var(--shadow-color); /* Glow effect */
-            position: relative;
-            z-index: 1; /* Bring text above pseudo-element */
-        }
-
-        /* Subtitle in header */
-        header p {
-            font-size: 1.4em;
-            color: var(--light-gray);
-            margin-top: 0;
-            position: relative;
+            background: rgba(16, 16, 16, 0.6);
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             z-index: 1;
         }
-
-        /* Styling for content sections */
-        section {
-            padding: 60px 20px;
-            margin-bottom: 20px;
-            background-color: var(--subtle-gray);
-            border-radius: 8px; /* Rounded corners */
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow */
-            position: relative;
-            overflow: hidden;
-            border: 1px solid var(--border-color); /* Subtle border */
-        }
-
-        /* Alternate background for even sections for visual variety */
-        section:nth-of-type(even) {
-            background-color: #121212;
-        }
-
-        /* Main section headings */
-        h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.5em;
-            color: var(--accent-color);
-            text-align: center;
-            margin-bottom: 40px;
-            position: relative;
-        }
-
-        /* Underline effect for h2 with glow */
-        h2::after {
+        .container-glow::before {
             content: '';
-            display: block;
-            width: 80px;
-            height: 3px;
-            background: var(--accent-color);
-            margin: 15px auto 0;
-            box-shadow: 0 0 10px rgba(0, 230, 118, 0.5);
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            /* UPDATED: Softer, more eye-friendly gradient */
+            background: linear-gradient(135deg, #4338ca, #14b8a6);
+            z-index: -1;
+            filter: blur(15px);
+            border-radius: 1rem;
+            opacity: 0.3;
+            transition: opacity 0.3s ease-in-out;
         }
-
-        /* Sub-headings within sections */
-        h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.8em;
-            color: var(--text-color);
-            margin-top: 40px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(0, 230, 118, 0.3); /* Subtle separator */
-            padding-bottom: 10px;
+        .container-glow:hover::before { opacity: 0.5; }
+        .form-input {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e5e5e5;
+            transition: all 0.3s ease;
         }
-
-        /* Paragraph text styling */
-        p {
-            font-size: 1.1em;
-            margin-bottom: 15px;
-            color: var(--light-gray);
+        .form-input:focus {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: #14b8a6; /* Match new gradient */
+            box-shadow: 0 0 15px rgba(20, 184, 166, 0.3); /* Match new gradient */
         }
-
-        /* List styling */
-        ul {
-            list-style: none; /* Remove default bullet points */
-            padding: 0;
-            margin-top: 20px;
+        .btn-glow {
+            background: linear-gradient(135deg, #4338ca, #14b8a6); /* Match new gradient */
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(20, 184, 166, 0.2);
         }
-
-        ul li {
-            background-color: #2a2a2a;
-            padding: 15px 20px;
-            margin-bottom: 10px;
-            border-left: 3px solid var(--accent-color); /* Accent line on left */
-            border-radius: 4px;
-            transition: transform 0.2s ease-in-out; /* Smooth hover effect */
+        .btn-glow:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(20, 184, 166, 0.4);
         }
-
-        ul li:hover {
-            transform: translateX(5px); /* Slide effect on hover */
+        .result-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
         }
-
-        /* Table styling */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 30px 0;
-            background-color: #2a2a2a;
-            border-radius: 8px;
-            overflow: hidden; /* Ensures rounded corners apply to content */
+        .buy-sell-toggle {
+            display: flex; border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem; overflow: hidden;
         }
-
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #444; /* Separator lines */
-            color: var(--light-gray);
+        .buy-sell-toggle button {
+            flex: 1; padding: 0.75rem; border: none; background: transparent;
+            color: #a0a0a0; cursor: pointer; transition: all 0.3s ease;
         }
-
-        th {
-            background-color: var(--accent-color);
-            color: var(--bg-color); /* Dark text on accent background */
-            font-weight: bold;
-            font-family: 'Orbitron', sans-serif;
+        .buy-sell-toggle button.active { color: #ffffff; font-weight: 600; }
+        .buy-sell-toggle .slider {
+            position: absolute; top: 0; bottom: 0; width: 50%;
+            border-radius: 0.5rem; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: -1;
         }
-
-        td {
-            font-size: 1em;
+        .buy-sell-toggle .slider.buy { left: 0; background: linear-gradient(135deg, #00b09b, #96c93d); }
+        .buy-sell-toggle .slider.sell { left: 50%; background: linear-gradient(135deg, #ff416c, #ff4b2b); }
+        .error-message { color: #ff4b2b; font-size: 0.875rem; height: 1.25rem; transition: all 0.3s ease; }
+        .editable-risk-input {
+            background: transparent; border: none; font-size: 1.5rem; line-height: 2rem;
+            font-weight: 700; color: #facc15; width: 100%; padding: 0;
         }
-
-        /* Call to Action button styling */
-        .cta-button {
-            display: inline-block;
-            background-color: var(--accent-color);
-            color: var(--bg-color);
-            padding: 15px 30px;
-            text-decoration: none; /* Remove underline */
-            border-radius: 50px; /* Pill shape */
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2em;
-            margin-top: 30px;
-            transition: all 0.3s ease; /* Smooth transitions for hover */
-            box-shadow: 0 0 20px var(--shadow-color); /* Glow effect */
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .editable-risk-input:disabled { background: transparent; }
+        .editable-risk-input:focus { outline: none; border-bottom: 2px solid #14b8a6; }
+        .edit-btn, .copy-btn {
+            background-color: rgba(255, 255, 255, 0.1); color: #a0a0a0;
+            border: none; padding: 0.25rem 0.75rem; border-radius: 0.375rem;
+            font-size: 0.75rem; transition: all 0.2s ease;
         }
-
-        .cta-button:hover {
-            background-color: #00c853; /* Slightly darker green on hover */
-            transform: translateY(-3px); /* Lift effect */
-            box-shadow: 0 0 30px rgba(0, 230, 118, 0.7); /* Stronger glow */
+        .edit-btn:hover, .copy-btn:hover { background-color: rgba(255, 255, 255, 0.2); color: #e5e5e5; }
+        .copy-btn { padding: 0.5rem; }
+        .visual-trade-bar { display: flex; width: 100%; height: 1.5rem; border-radius: 0.5rem; overflow: hidden; background-color: rgba(255,255,255,0.1); }
+        .visual-bar-risk { background-color: #ff4b2b; }
+        .visual-bar-reward { background-color: #00b09b; }
+        .scenario-btn {
+            background-color: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #a0a0a0; transition: all 0.2s ease;
         }
+        .scenario-btn:hover { background-color: rgba(255, 255, 255, 0.1); color: #e5e5e5; }
 
-        /* Footer styling */
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            margin-top: 50px;
-            border-top: 1px solid var(--border-color); /* Top border */
-            color: var(--light-gray);
-        }
-
-        /* Social links in footer */
-        footer .social-links a {
-            color: var(--accent-color);
-            text-decoration: none;
-            margin: 0 15px;
-            font-size: 1.1em;
-            transition: color 0.3s ease;
-        }
-
-        footer .social-links a:hover {
-            color: var(--text-color); /* Change color on hover */
-        }
-
-        /* Responsive adjustments for smaller screens */
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2.5em;
-            }
-
-            header p {
-                font-size: 1.1em;
-            }
-
-            h2 {
-                font-size: 2em;
-            }
-
-            h3 {
-                font-size: 1.5em;
-            }
-
-            .cta-button {
-                font-size: 1em;
-                padding: 12px 25px;
-            }
-
-            /* Make table responsive by stacking cells */
-            table, thead, tbody, th, td, tr {
-                display: block;
-            }
-
-            /* Hide table headers (but not display: none;, for accessibility) */
-            thead tr {
-                position: absolute;
-                top: -9999px;
-                left: -9999px;
-            }
-
-            tr {
-                border: 1px solid #444;
-                margin-bottom: 10px;
-                background-color: #2a2a2a;
-            }
-
-            td {
-                border: none;
-                border-bottom: 1px solid #444;
-                position: relative;
-                padding-left: 50%; /* Space for the data-label */
-                text-align: right;
-            }
-
-            /* Create custom labels for table cells on small screens */
-            td::before {
-                content: attr(data-label); /* Use data-label attribute for content */
-                position: absolute;
-                left: 6px;
-                width: 45%;
-                padding-right: 10px;
-                white-space: nowrap;
-                text-align: left;
-                font-weight: bold;
-                color: var(--accent-color);
-            }
-        }
     </style>
 </head>
-<body>
-
-    <header>
-        <div class="container">
-            <h1>MOHAMED UGAS</h1>
-            <p>Maareynta Xisaabta (Sidee loo Koriyaa Xisaabtaada)</p>
-        </div>
-    </header>
-
-    <main class="container">
-
-        <section id="introduction">
-            <h2>Hordhac</h2>
-            <p>Qodabadan halkan aan kuxusi doono waa kuwa aan aniga Mohamed Ugas ahaan iga cawiyey inan noqdo qof profitable trader ah kadib niyadjab iyo khasaaro badan aan muddo dheer suuqa kala kulmey. Marka aan go'aansaday inaan ilaaliyo qodabadan waxey ii noqdeen ishii biyaha ama wadadii guusha aan muddo badan kudhibana inan mar un helo. Hadana manta waxan ahay shaqsi guuleystey kuna xiranyihin kumanan dhalinyaro, una ah mentor ama hogamiye dhanka suuqa forex ku hega sidii ay ayaga kuheli lahayen aqoon sax ah marka ay kushaqeystan oguna bedbadan qaladaadkii badnaa aan aniga soo marey.</p>
-            <p>Qodabadan waxan ukala qadeyna 5 qeybood midwalba aan siineyno muhimadiisa. Xasuusin: aqri ilaa dhamaadka sii aad ufahanto qodobada.</p>
-        </section>
-
-        <section id="core-principles">
-            <h2>Mabaadi'deena Muhiimka Ah</h2>
-
-            <div class="principle">
-                <h3>1. STRATEGY</h3>
-                <p>(Qorshe ama strategy shameystiran oo shaqeysa lana tijabiyey)</p>
-                <p>Strategy waa nidhaam ama qorshe ladego muddo dheer ama muddo kooban si loo hormariyo ama guul looga gaaro. Waxaa jira nidhaam loo maro waxwalbo larabo in guul laga gaaro ama lahormariyo, hadey noqoto ganacsi, hormar shaqsiyadeed, siyaasad, dhisin wadan, hogamin, gaaris dhaqaale maliyadeed, kobcin dhaqale, kuwasi waa tusaaloyin cad oo markana ubahan strategy. Hadaba suuqan forex, waa suuqa ogu weyn aduunka dhanka sarifka malinlaha ah. Hadaba si lamid ah waa inan heysana nidham aan marka ogu guleysan karno waana strategy. Hadaba maxaa meshan noga cad, iney waajib tahay inan heysano qorshe marka aan ku hool gali karno, si aan lacag ogu sameyno suuqa.</p>
+<body class="min-h-screen flex items-center justify-center p-4 bg-black">
+    <div class="w-full max-w-4xl mx-auto">
+        <div class="container-glow p-6 sm:p-8">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl sm:text-4xl font-bold text-white tracking-tight">Price Calculator</h1>
+                <p class="text-neutral-400 mt-2">Smart & Stylish Risk Management Tool for Traders</p>
             </div>
 
-            <div class="principle">
-                <h3>2. TRADING PLAN AMA ROUTINE</h3>
-                <p>(Qorshe ama jadwal shaqo)</p>
-                <p>Trading plan waa qorsheynta malintada ama sida aad uwajihi laheyd suuqa, sida taxliinta guud malinta, qorida lacagaha aad rabto manta inaad fursada karadiso, ilaalinta shuruucdada strategy, indho kuheynta fursadaha waqtiga ay diyaar noqonayan, gabagabeynta malinta sidey aheyd inta adan seexan ka hor. Routine waa jadwal kudegsan aad suuqa soo gasho waxeyba kuxirantahy nooca adiga tahay. Ani ahaan waxaan ahay Day trader, waxaana badna trade gareeyaa New York session laga bilaabo 4:00pm East Time ilaa 9:00pm. Inta badan waxa intaa noo diidey ama naga hortagan ayna dadka badankii u arkan iney caadi tahay qofka malinkii uu rabo inuu trade gareeyo ama uu iska maqnan karo, ama ha trade gareeyo ikn uusan suuqa diirada saareynin kudhaxwada holihiisa kale noolol maalmedka ahaa, sida dawasho social media, lashakeysi asxaab, hurda uu arko inuu seexdo caadi ay latahay, caweys, ama signals raadis uu umaleyo inuu sida lacag kusameyn karo. Intaa qodob aan sheegey waa kuwa dhalinta ay kudhibanyihin una diidey iney ka guuleystan suuqa.</p>
-                <h4>Faa'iidooyinka inaad Trading Plan La Hato:</h4>
-                <ul>
-                    <li>Inaad noqoto trader fiican shuruudisa ilaaliya lacag sameynta waa natiijo.</li>
-                    <li>Dhisinta iyo xakameynta fikirka maskaxda kudhasha xiliyada khasaraha iyo faa'iidada.</li>
-                    <li>Inaad sameysato xili suuqa u gooni ah waxey ka cawineysaa inaad isku aragto qof horey usocod ah.</li>
-                </ul>
-            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Input Section -->
+                <div class="space-y-4">
+                    <!-- Scenario Management -->
+                    <div class="p-3 rounded-lg bg-white/5 space-y-3">
+                        <label class="block text-sm font-medium text-neutral-300">Scenarios</label>
+                        <div class="flex gap-2">
+                            <select id="load-scenario-select" class="w-full p-2 rounded-md form-input text-sm">
+                                <option value="">Load a scenario...</option>
+                            </select>
+                            <button id="delete-scenario-btn" class="p-2 rounded-md scenario-btn">Delete</button>
+                        </div>
+                        <button id="save-scenario-btn" class="w-full p-2 rounded-md scenario-btn">Save Current as Scenario</button>
+                    </div>
 
-            <div class="principle">
-                <h3>3. RISK MANAGEMENT</h3>
-                <p>(Xakameynta Khasaaraha)</p>
-                <p>Ganacsi walbo wuxuu leeyahay qasaaro iyo faa'iido intaba. Trading kana waa ganacsiga ogu weyn aduunka dhanka sarifka aan anaga kashaqeysano sarifka lacagaha qalaad (forex). Malinkii keli ah waxa suuqa lakala sarifaa lacag kudhawad $7.5 trillion USD ah, taasi oo kutuseysa awooda ganacsi aad rabto inaa barato waxaana ogu horeeya ganacsatada waweyn sida bankiyada caalamka. Su'aasha waxey tahay ma umaleysa meel si fudud lacag looga sameeyo ama fikir shaqsi ani iyo adi ah iney si fudud ogu guuleysan karan? Jawaabta waa haa ama maya heerka aqoneed adiga aad leedahay. Si ay jawaabteena haa ay unoqoto hadaba waa in aan barana xakameynta qasaraha, madama suuqa ay nagula jiraan BANKS iyo dadyow kale oo naga awood badan suuqana ukaxeyn karan dhankey raban u go'aamin karan kor ama hoos. Hadaba waxaan kusinayaa Table aad raaci doonto aan aniga xita si malinla ah uisticmaalo ina fududeyey inaa suuqa faa'iido kala imado.</p>
+                    <div>
+                        <label class="block text-sm font-medium text-neutral-300 mb-2">Trade Direction</label>
+                        <div class="relative buy-sell-toggle">
+                            <div class="slider buy"></div>
+                            <button id="buy-btn" class="active">Buy</button>
+                            <button id="sell-btn">Sell</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="currency-pair" class="block text-sm font-medium text-neutral-300 mb-2">Currency Pair</label>
+                        <input type="text" id="currency-pair" placeholder="e.g., EUR/USD" class="w-full p-3 rounded-lg form-input uppercase">
+                    </div>
+                    <div>
+                        <label for="entry-price" class="block text-sm font-medium text-neutral-300 mb-2">Entry Price</label>
+                        <input type="number" step="any" id="entry-price" placeholder="e.g., 1.07500" class="w-full p-3 rounded-lg form-input">
+                    </div>
+                    <div>
+                        <label for="account-size" class="block text-sm font-medium text-neutral-300 mb-2">Account Size (USD)</label>
+                        <input type="number" step="any" id="account-size" placeholder="e.g., 10000" class="w-full p-3 rounded-lg form-input">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="risk-percent" class="block text-sm font-medium text-neutral-300 mb-2">Risk (%)</label>
+                            <input type="number" step="any" id="risk-percent" value="1" class="w-full p-3 rounded-lg form-input">
+                        </div>
+                        <div>
+                            <label for="rr-ratio" class="block text-sm font-medium text-neutral-300 mb-2">R:R Ratio (1:X)</label>
+                            <input type="number" step="any" id="rr-ratio" value="3" class="w-full p-3 rounded-lg form-input">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="stop-loss-pips" class="block text-sm font-medium text-neutral-300 mb-2">Stop Loss (Pips)</label>
+                        <input type="number" step="any" id="stop-loss-pips" placeholder="e.g., 20" class="w-full p-3 rounded-lg form-input">
+                    </div>
+                    <button id="calculate-btn" class="w-full p-3 rounded-lg font-semibold text-white btn-glow !mt-8">Calculate</button>
+                    <p id="error-message" class="error-message text-center"></p>
+                </div>
 
-                <h4>Tusaale Lacageed ee Adiga Account Kugu Jirto:</h4>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>XISAAB</th>
-                            <th>XAJMIGA LOT</th>
-                            <th>QASAARA</th>
-                            <th>HADAF</th>
-                            <th>SL</th>
-                            <th>TP</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td data-label="XISAAB">100$</td>
-                            <td data-label="XAJMIGA LOT">0.02</td>
-                            <td data-label="QASAARA">Qasaaro Dhexdhexaad ah<br>3% (3$)</td>
-                            <td data-label="HADAF">Hadaf Dhexdhexaad ah<br>6% (6$)</td>
-                            <td data-label="SL">20pips</td>
-                            <td data-label="TP">40pips</td>
-                        </tr>
-                        <tr>
-                            <td data-label="XISAAB"></td>
-                            <td data-label="XAJMIGA LOT">0.03</td>
-                            <td data-label="QASAARA">Qasaaro Sare<br>5% (5$)</td>
-                            <td data-label="HADAF">Hadaf Sare<br>10% (10$)</td>
-                            <td data-label="SL">25pips</td>
-                            <td data-label="TP">50+pips</td>
-                        </tr>
-                        <tr>
-                            <td data-label="XISAAB">200$</td>
-                            <td data-label="XAJMIGA LOT">0.04</td>
-                            <td data-label="QASAARA">Qasaaro Dhexdhexaad ah<br>3% (6$)</td>
-                            <td data-label="HADAF">Hadaf Dhexdhexaad ah<br>12% (12$)</td>
-                            <td data-label="SL">25pips</td>
-                            <td data-label="TP">50+</td>
-                        </tr>
-                        <tr>
-                            <td data-label="XISAAB"></td>
-                            <td data-label="XAJMIGA LOT"></td>
-                            <td data-label="QASAARA">Qasaaro Sare<br>5% (10$)</td>
-                            <td data-label="HADAF">Hadaf Sare<br>5% (20$)</td>
-                            <td data-label="SL"></td>
-                            <td data-label="TP"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <p>Hadii ay tahay account nadaada kuwa kaasi weyn xisaabta lot ka iyo risk marwalba waxa isticmaashaa kudhufusho ama multiplication. Sidoo kale waxa soo degsan karta myfxbook app kuxisabiya account kaga adigo calculate camal uisticmalaya, ama booqo webkooda myfxbook.com. Muqaal aan aniga duubey ayaa jiro sida loo isticmaalo iyo account challenge yada kasoo dawwo free course website keena ugasfx.co.</p>
-                <p>Table ka waxa uu natusayaa xisaabida, lot size, risk % iyo Target ogu fiican aan suuqa karaadsan karno. Stop Loss (SL) iyo Take Profit (TP) sida saxda waxey kuxirantahy fursada malinka suuqa sey kusoo wajahdo ama aad u aragto. Ani ahaan SMC entry model marwalba qasaraheyga pips ka kamabadno 25 hadii suuqa inta kabadan kor u kaco ama hoos udhaco waan isaga baxa wayo waxaan siiyey waa intii account kayga malinka ugo talagaley shuruudana majibiyo oo mafiirsado trade xadkiisa dhaafey markiiba SL kiisa ayuu kudhaca waxaana usi gudbaa trade yada kale xiga. Take profit (TP) marwalba waxa ogu yar aan kuxiro waa intii qasaaro aan ogola labo jibaarkeda markuu suuqa isiiyo. TP ga ogu danbeyana waxaan ogu baxaa filashadii aan suuqa karabey markuu ii dhameystiro, taaso mararka qaar isiiya 1:4 RRR. Si live ahna ayn trade yadeena kuqabna qeybteena Discord.</p>
-            </div>
-
-            <div class="principle">
-                <h3>4. JOOGTEYN, SAMIR IYO ADAAB</h3>
-                <p>(Consistency, Patience, Discipline)</p>
-                <p>Waa seddex qodob is hoos imaada midba midka kale dhameystira. Hadii aan ku hormaro Joogteynta ama kusamirka howl qabasho ma aha wax fudud siiba markey noqoto hormarin shaqsiyadeed ama wax soo saar. Bani aadam ahaan waxan u abuuranahay degdegsimo nafeed. Qaabfikirka aan heysano aan kuso barbaarney ama trading aan kusoo galno ma aha mid kashaqeysa suuqa ama naga cawin karta ina lacag kasameyno waxa lalatacaamulna waxan lahubin mesha ay kudhaman donto faa'iido ama khasaaro micnaheedu waa mid aan anaga go'aan ka gaari karin waxa aan heli doogno waa wax naga madax banaan. Trading ka wuxuu kusinayaa madax banaani ama freedom aad waxa rabto ku sameyn karto taaso inta badan dhalisa iney dadka suuqa ay ubadanyihiin kuwa lacag raadiya. Raadinta darted ay ayaga tooda kuwayan saas darteed waxan ubahanahay adaab na hagaysa kamadaxbanan fikirka nolol maalmeedkeena madama suuqa si aan u xakameyno maskaxdeena.</p>
-            </div>
-
-        </section>
-
-        <section id="conclusion">
-            <h2>GABAGABEYN</h2>
-            <p>Ilaali qodobadan sida adigo ay kuxirantahy naftada lagudhay wey udhimaneysa kuna tababar nafta iney laqabsato iney sameyso qodobadan ayanga kuu ah gusha radineyso kuna sahli doonto lacg sameynta, cabsi iyo dareen lacageed wadka gudbi donta waxana noqoneysa qof ganacsi kujira.</p>
-            <p>Sidoo kale live trade membership keena waxan kala socon karta dhanka Discord keena aan si malin la ah ogu soo xadirno anago fursadaha malinlaha iyo aqoon kalafaidna.</p>
-        </section>
-
-        <section id="about-author">
-            <h2>Qoraaga</h2>
-            <p>Waraaqdan yar waxa qorey MOHAMED UGAS.</p>
-        </section>
-
-        <section id="resources-contact" style="text-align: center;">
-            <h2>Kheyraad & Xiriir</h2>
-            <p>
-                <a href="#UGASTRADING.COM" class="cta-button">KOORSADA BILAASHKA AH: UGASTRADING.COM</a>
-            </p>
-            <p style="margin-top: 30px;">
-                Kala xiriir qeybteena website support WhatsApp wixii kalo cawain dheeraad ah.
-            </p>
-        </section>
-
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Mohamed Ugas. Xuquuqda oo dhan way xifdisan tahay.</p>
-            <div class="social-links">
-                <a href="#">Discord</a>
-                <a href="#">WhatsApp</a>
-                <a href="#">MyFXBook</a>
+                <!-- Output Section -->
+                <div class="space-y-4">
+                    <div id="visual-trade-bar-container" class="hidden">
+                        <p class="text-sm text-neutral-400 mb-2">Visual Risk/Reward</p>
+                        <div id="visual-trade-bar" class="visual-trade-bar"></div>
+                    </div>
+                    <div id="result-risk-amount-card" class="p-5 rounded-lg result-card hidden">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-sm text-neutral-400">Risk Amount (USD)</p>
+                                <div class="flex items-center">
+                                    <span class="text-2xl font-bold text-yellow-400 mr-1">$</span>
+                                    <input type="number" id="editable-risk-amount" class="editable-risk-input" disabled>
+                                </div>
+                                <p id="risk-feedback" class="text-xs text-neutral-500 h-4 mt-1"></p>
+                            </div>
+                            <button id="edit-risk-btn" class="edit-btn">Edit</button>
+                        </div>
+                    </div>
+                    <div id="result-pip-value" class="p-5 rounded-lg result-card hidden"><p class="text-sm text-neutral-400">Pip Value</p><p class="text-2xl font-bold text-white">-</p></div>
+                    <div id="result-lot-size" class="p-5 rounded-lg result-card hidden"><p class="text-sm text-neutral-400">Suggested Lot Size</p><p class="text-2xl font-bold text-white">-</p></div>
+                    <div id="result-stop-loss" class="p-5 rounded-lg result-card hidden">
+                        <div class="flex justify-between items-center">
+                            <div><p class="text-sm text-neutral-400">Stop Loss Price</p><p id="sl-price-value" class="text-2xl font-bold text-red-400">-</p></div>
+                            <button class="copy-btn" data-copy-target="sl-price-value"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/></svg></button>
+                        </div>
+                    </div>
+                    <div id="result-take-profit" class="p-5 rounded-lg result-card hidden">
+                        <div class="flex justify-between items-center">
+                            <div><p class="text-sm text-neutral-400">Take Profit Price</p><p id="tp-price-value" class="text-2xl font-bold text-green-400">-</p></div>
+                             <button class="copy-btn" data-copy-target="tp-price-value"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/></svg></button>
+                        </div>
+                    </div>
+                     <div id="result-breakeven" class="p-5 rounded-lg result-card hidden">
+                        <div class="flex justify-between items-center">
+                            <div><p class="text-sm text-neutral-400">Breakeven Price (est. 1 pip spread)</p><p id="be-price-value" class="text-2xl font-bold text-blue-400">-</p></div>
+                             <button class="copy-btn" data-copy-target="be-price-value"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/><path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/></svg></button>
+                        </div>
+                    </div>
+                    <div id="result-expected-profit" class="p-5 rounded-lg result-card hidden"><p class="text-sm text-neutral-400">Expected Profit</p><p class="text-2xl font-bold text-green-400">-</p></div>
+                </div>
             </div>
         </div>
-    </footer>
+    </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Element References ---
+            const buyBtn = document.getElementById('buy-btn'), sellBtn = document.getElementById('sell-btn');
+            const slider = document.querySelector('.slider');
+            const currencyPairInput = document.getElementById('currency-pair');
+            const entryPriceInput = document.getElementById('entry-price');
+            const accountSizeInput = document.getElementById('account-size');
+            const riskPercentInput = document.getElementById('risk-percent');
+            const rrRatioInput = document.getElementById('rr-ratio');
+            const stopLossPipsInput = document.getElementById('stop-loss-pips');
+            const calculateBtn = document.getElementById('calculate-btn');
+            const errorMessage = document.getElementById('error-message');
+
+            const resultRiskAmountCard = document.getElementById('result-risk-amount-card');
+            const editableRiskAmountInput = document.getElementById('editable-risk-amount');
+            const editRiskBtn = document.getElementById('edit-risk-btn');
+            const riskFeedback = document.getElementById('risk-feedback');
+
+            const resultPipValueCard = document.getElementById('result-pip-value');
+            const resultLotSizeCard = document.getElementById('result-lot-size');
+            const resultStopLossCard = document.getElementById('result-stop-loss');
+            const resultTakeProfitCard = document.getElementById('result-take-profit');
+            const resultBreakevenCard = document.getElementById('result-breakeven');
+            const resultExpectedProfitCard = document.getElementById('result-expected-profit');
+            
+            const visualTradeBarContainer = document.getElementById('visual-trade-bar-container');
+            const visualTradeBar = document.getElementById('visual-trade-bar');
+
+            const saveScenarioBtn = document.getElementById('save-scenario-btn');
+            const loadScenarioSelect = document.getElementById('load-scenario-select');
+            const deleteScenarioBtn = document.getElementById('delete-scenario-btn');
+
+            let tradeDirection = 'buy';
+
+            // --- Event Listeners ---
+            buyBtn.addEventListener('click', () => setTradeDirection('buy'));
+            sellBtn.addEventListener('click', () => setTradeDirection('sell'));
+            calculateBtn.addEventListener('click', handleCalculation);
+            editRiskBtn.addEventListener('click', enableRiskEditing);
+            editableRiskAmountInput.addEventListener('input', handleRiskAmountChange);
+            document.querySelectorAll('.copy-btn').forEach(btn => btn.addEventListener('click', handleCopyClick));
+            saveScenarioBtn.addEventListener('click', saveScenario);
+            loadScenarioSelect.addEventListener('change', loadSelectedScenario);
+            deleteScenarioBtn.addEventListener('click', deleteSelectedScenario);
+            
+            // --- Initial Setup ---
+            loadScenariosIntoSelect();
+
+            // --- Core Functions ---
+            function setTradeDirection(direction) {
+                tradeDirection = direction;
+                slider.className = `slider ${direction}`;
+                buyBtn.classList.toggle('active', direction === 'buy');
+                sellBtn.classList.toggle('active', direction === 'sell');
+            }
+
+            function handleCalculation() {
+                const inputs = getAndValidateInputs();
+                if (!inputs) return;
+
+                clearError();
+                editableRiskAmountInput.disabled = true;
+                riskFeedback.textContent = '';
+
+                const calculations = performCalculations(inputs);
+                displayResults(calculations);
+            }
+
+            function getAndValidateInputs() {
+                const inputs = {
+                    entryPrice: parseFloat(entryPriceInput.value),
+                    accountSize: parseFloat(accountSizeInput.value),
+                    riskPercent: parseFloat(riskPercentInput.value),
+                    rrRatio: parseFloat(rrRatioInput.value),
+                    stopLossPips: parseFloat(stopLossPipsInput.value),
+                    currencyPair: currencyPairInput.value.toUpperCase()
+                };
+
+                if (Object.values(inputs).some(v => !v) || inputs.entryPrice <= 0 || inputs.accountSize <= 0 || inputs.riskPercent <= 0 || inputs.rrRatio <= 0 || inputs.stopLossPips <= 0 || inputs.currencyPair.length < 6) {
+                    showError('Please fill all fields with valid positive numbers.');
+                    return null;
+                }
+                return inputs;
+            }
+
+            function performCalculations(inputs, riskAmountOverride = null) {
+                const riskAmount = riskAmountOverride ?? inputs.accountSize * (inputs.riskPercent / 100);
+                const isJpyPair = inputs.currencyPair.includes('JPY');
+                const pipDecimal = isJpyPair ? 0.01 : 0.0001;
+                const pipValueUsd = 10 / (isJpyPair ? 100 : 1);
+                
+                const lotSize = riskAmount / (inputs.stopLossPips * pipValueUsd);
+                const pipValueForLot = lotSize * pipValueUsd;
+
+                const slPrice = tradeDirection === 'buy' 
+                    ? inputs.entryPrice - (inputs.stopLossPips * pipDecimal)
+                    : inputs.entryPrice + (inputs.stopLossPips * pipDecimal);
+
+                const takeProfitPips = inputs.stopLossPips * inputs.rrRatio;
+                const tpPrice = tradeDirection === 'buy'
+                    ? inputs.entryPrice + (takeProfitPips * pipDecimal)
+                    : inputs.entryPrice - (takeProfitPips * pipDecimal);
+                
+                const spreadPips = 1.0; // Assumed spread for BE calculation
+                const bePrice = tradeDirection === 'buy'
+                    ? inputs.entryPrice + (spreadPips * pipDecimal)
+                    : inputs.entryPrice - (spreadPips * pipDecimal);
+
+                const expectedProfit = riskAmount * inputs.rrRatio;
+
+                return {
+                    riskAmount: riskAmount.toFixed(2),
+                    lotSize: lotSize.toFixed(2),
+                    pipValue: pipValueForLot.toFixed(2),
+                    stopLossPrice: slPrice.toFixed(isJpyPair ? 3 : 5),
+                    takeProfitPrice: tpPrice.toFixed(isJpyPair ? 3 : 5),
+                    breakevenPrice: bePrice.toFixed(isJpyPair ? 3 : 5),
+                    expectedProfit: expectedProfit.toFixed(2),
+                    rrRatio: inputs.rrRatio
+                };
+            }
+
+            function displayResults(data) {
+                editableRiskAmountInput.value = data.riskAmount;
+                resultPipValueCard.querySelector('p:last-child').textContent = `$${data.pipValue} per pip`;
+                resultLotSizeCard.querySelector('p:last-child').textContent = data.lotSize;
+                document.getElementById('sl-price-value').textContent = data.stopLossPrice;
+                document.getElementById('tp-price-value').textContent = data.takeProfitPrice;
+                document.getElementById('be-price-value').textContent = data.breakevenPrice;
+                resultExpectedProfitCard.querySelector('p:last-child').textContent = `$${data.expectedProfit}`;
+                
+                updateVisualBar(data.rrRatio);
+
+                [visualTradeBarContainer, resultRiskAmountCard, resultPipValueCard, resultLotSizeCard, resultStopLossCard, resultTakeProfitCard, resultBreakevenCard, resultExpectedProfitCard]
+                    .forEach(card => card.classList.remove('hidden'));
+            }
+
+            // --- UI Interaction Helpers ---
+            function enableRiskEditing() {
+                editableRiskAmountInput.disabled = false;
+                editableRiskAmountInput.focus();
+                riskFeedback.textContent = 'Editing risk amount...';
+            }
+
+            function handleRiskAmountChange() {
+                const newRiskAmount = parseFloat(editableRiskAmountInput.value);
+                const inputs = getAndValidateInputs();
+                if (!inputs || isNaN(newRiskAmount) || newRiskAmount <= 0) return;
+                
+                const newRiskPercent = (newRiskAmount / inputs.accountSize) * 100;
+                riskPercentInput.value = newRiskPercent.toFixed(2);
+                riskFeedback.textContent = `This is ${newRiskPercent.toFixed(2)}% of your account.`;
+
+                const calcs = performCalculations(inputs, newRiskAmount);
+                resultLotSizeCard.querySelector('p:last-child').textContent = calcs.lotSize;
+                resultExpectedProfitCard.querySelector('p:last-child').textContent = `$${calcs.expectedProfit}`;
+                resultPipValueCard.querySelector('p:last-child').textContent = `$${calcs.pipValue} per pip`;
+            }
+
+            function updateVisualBar(rrRatio) {
+                visualTradeBar.innerHTML = '';
+                const totalParts = 1 + rrRatio;
+                const riskPercent = (1 / totalParts) * 100;
+                const rewardPercent = (rrRatio / totalParts) * 100;
+
+                const riskDiv = document.createElement('div');
+                riskDiv.className = 'visual-bar-risk';
+                riskDiv.style.width = `${riskPercent}%`;
+                
+                const rewardDiv = document.createElement('div');
+                rewardDiv.className = 'visual-bar-reward';
+                rewardDiv.style.width = `${rewardPercent}%`;
+
+                visualTradeBar.appendChild(riskDiv);
+                visualTradeBar.appendChild(rewardDiv);
+            }
+
+            function handleCopyClick(event) {
+                const btn = event.currentTarget;
+                const targetId = btn.dataset.copyTarget;
+                const textToCopy = document.getElementById(targetId).textContent;
+
+                const textarea = document.createElement('textarea');
+                textarea.value = textToCopy;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+
+                const originalContent = btn.innerHTML;
+                btn.innerHTML = 'Copied!';
+                setTimeout(() => { btn.innerHTML = originalContent; }, 1500);
+            }
+
+            function showError(message) {
+                errorMessage.textContent = message;
+                hideResults();
+            }
+
+            function clearError() { errorMessage.textContent = ''; }
+
+            function hideResults() {
+                [visualTradeBarContainer, resultRiskAmountCard, resultPipValueCard, resultLotSizeCard, resultStopLossCard, resultTakeProfitCard, resultBreakevenCard, resultExpectedProfitCard]
+                    .forEach(card => card.classList.add('hidden'));
+            }
+
+            // --- LocalStorage Scenario Functions ---
+            function saveScenario() {
+                const scenarioName = prompt("Enter a name for this scenario:");
+                if (!scenarioName) return;
+
+                const scenarios = JSON.parse(localStorage.getItem('forexCalcScenarios') || '{}');
+                scenarios[scenarioName] = {
+                    currencyPair: currencyPairInput.value,
+                    entryPrice: entryPriceInput.value,
+                    accountSize: accountSizeInput.value,
+                    riskPercent: riskPercentInput.value,
+                    rrRatio: rrRatioInput.value,
+                    stopLossPips: stopLossPipsInput.value
+                };
+                localStorage.setItem('forexCalcScenarios', JSON.stringify(scenarios));
+                loadScenariosIntoSelect();
+                alert(`Scenario "${scenarioName}" saved!`);
+            }
+
+            function loadScenariosIntoSelect() {
+                const scenarios = JSON.parse(localStorage.getItem('forexCalcScenarios') || '{}');
+                loadScenarioSelect.innerHTML = '<option value="">Load a scenario...</option>';
+                for (const name in scenarios) {
+                    const option = document.createElement('option');
+                    option.value = name;
+                    option.textContent = name;
+                    loadScenarioSelect.appendChild(option);
+                }
+            }
+
+            function loadSelectedScenario() {
+                const scenarioName = loadScenarioSelect.value;
+                if (!scenarioName) return;
+
+                const scenarios = JSON.parse(localStorage.getItem('forexCalcScenarios') || '{}');
+                const data = scenarios[scenarioName];
+                if (data) {
+                    currencyPairInput.value = data.currencyPair || '';
+                    entryPriceInput.value = data.entryPrice || '';
+                    accountSizeInput.value = data.accountSize || '';
+                    riskPercentInput.value = data.riskPercent || '1';
+                    rrRatioInput.value = data.rrRatio || '3';
+                    stopLossPipsInput.value = data.stopLossPips || '';
+                }
+            }
+
+            function deleteSelectedScenario() {
+                const scenarioName = loadScenarioSelect.value;
+                if (!scenarioName) {
+                    alert('Please select a scenario to delete.');
+                    return;
+                }
+                if (confirm(`Are you sure you want to delete the "${scenarioName}" scenario?`)) {
+                    const scenarios = JSON.parse(localStorage.getItem('forexCalcScenarios') || '{}');
+                    delete scenarios[scenarioName];
+                    localStorage.setItem('forexCalcScenarios', JSON.stringify(scenarios));
+                    loadScenariosIntoSelect();
+                    alert(`Scenario "${scenarioName}" deleted.`);
+                }
+            }
+        });
+    </script>
 </body>
 </html>
